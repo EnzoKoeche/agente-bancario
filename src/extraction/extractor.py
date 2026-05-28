@@ -7,10 +7,10 @@ from typing import Any
 
 import anthropic
 
-from src.schemas.models import DadosFinanceiros, ValorComFonte
+from src.schemas.models import DadosFinanceiros
+from src.extraction.confianca import aplicar_regras_de_confianca
 from src.audit.logger import AuditLogger
 
-LIMIAR_CONFIANCA = 0.6  # abaixo disso, o campo é marcado como não confiável (vira None)
 MODELO = "claude-haiku-4-5"
 NOME_TOOL = "registrar_dados_extraidos"
 
@@ -35,17 +35,6 @@ def _montar_documentos(documentos: dict[str, Any]) -> str:
     blocos = [f'<documento nome="{nome}">\n{conteudo}\n</documento>'
               for nome, conteudo in documentos.items()]
     return "\n\n".join(blocos)
-
-
-def _aplicar_regras_de_confianca(dados: DadosFinanceiros) -> DadosFinanceiros:
-    """Valor sem fonte ou com confiança abaixo do limiar vira None (escala para humano)."""
-    for campo in DadosFinanceiros.model_fields:
-        vcf: ValorComFonte = getattr(dados, campo)
-        if vcf.valor is None:
-            continue
-        if vcf.fonte is None or vcf.fonte.confianca < LIMIAR_CONFIANCA:
-            setattr(dados, campo, ValorComFonte())
-    return dados
 
 
 def extrair_dados(documentos: dict[str, Any], audit: AuditLogger) -> DadosFinanceiros:
@@ -78,7 +67,7 @@ def extrair_dados(documentos: dict[str, Any], audit: AuditLogger) -> DadosFinanc
         if bruto is None:
             raise ValueError("o modelo não retornou a tool de extração")
 
-        dados = _aplicar_regras_de_confianca(DadosFinanceiros.model_validate(bruto))
+        dados = aplicar_regras_de_confianca(DadosFinanceiros.model_validate(bruto))
 
     except Exception as e:  # falha de API/JSON/validação: escala ao humano, não inventa
         audit.registrar("extracao_erro", {"erro": f"{type(e).__name__}: {e}"})
