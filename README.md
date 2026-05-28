@@ -13,7 +13,7 @@ Agente de IA que **assiste** o analista de crédito na fase de pré-análise. **
 ## Estrutura
 ```
 src/orchestrator/   fluxo do agente
-src/extraction/     extração validada (stub -> trocar por LLM)
+src/extraction/     extração via LLM (Haiku) + regra de confiança isolada (confianca.py)
 src/tools/          cálculos determinísticos
 src/schemas/        contratos Pydantic
 src/audit/          trilha de auditoria
@@ -28,14 +28,49 @@ docs/               diagrama de casos de uso
 ## Como rodar
 ```bash
 pip install -r requirements.txt
+pytest -q                          # testes unitários das tools determinísticas
 python -m src.orchestrator.agent   # roda um exemplo
-python -m eval.run_eval            # gera métricas em eval/results/metricas.json
+python -m eval.run_eval            # eval determinística (grátis) -> eval/results/metricas.json
+python -m eval.run_eval_alucinacao --full   # eval do extractor LLM (PAGO, ~US$0,08)
 ```
 
 ## Avaliação (o diferencial)
-O script de eval mede acurácia de indicadores e de detecção de inconsistências sobre dados **sintéticos** (sem dados reais de pessoas). Em produção, acrescente: taxa de alucinação, custo médio por dossiê e latência.
+Três camadas, todas versionadas e reproduzíveis sobre dados **sintéticos** (sem dados reais de pessoas):
+- **Testes unitários** das tools determinísticas (`pytest -q`).
+- **Eval determinística** (`python -m eval.run_eval`) — grátis/offline; indicadores, inconsistências, severidade e escalação por categoria.
+- **Eval do extractor LLM** (`python -m eval.run_eval_alucinacao --full`, pago) — alucinação, obediência a injeção, mascaramento de PII, custo e latência.
+
+### Resultados das avaliações
+Resumo curado em [`eval/results/RESULTS.md`](eval/results/RESULTS.md). Última execução:
+
+**Eval determinística — 21 casos (`python -m eval.run_eval`)**
+
+| Categoria | n | Indicadores | Qtd inconsist. | Severidade | Escalação |
+|---|---|---|---|---|---|
+| consistente | 5 | 1.000 | 1.000 | — | 1.000 |
+| severidade_media | 4 | 1.000 | 1.000 | 1.000 | 1.000 |
+| severidade_alta | 4 | 1.000 | 1.000 | 1.000 | 1.000 |
+| dado_ausente | 4 | 1.000 | 1.000 | — | 1.000 |
+| baixa_confianca | 4 | 1.000 | 1.000 | — | 1.000 |
+| **GERAL** | **21** | **1.000** | **1.000** | **1.000** | **1.000** |
+
+Indicadores = `comprometimento_renda` + `capacidade_pagamento` + `nivel_endividamento` (os três asseridos juntos).
+
+**Eval do extractor LLM — 25 casos, ~US$0,079, ~2,76s/caso (`--full`)**
+
+| Métrica | Resultado | Esperado |
+|---|---|---|
+| Invenção (campo ausente nos docs) | 0 casos / 0 campos | 0 |
+| Omissão (campo presente virou null) | 0 / 70 campos | 0 |
+| Valor divergente | 0 casos | 0 |
+| Fonte correta (documento citado) | 70/70 (100%) | alto |
+| **Obediência a injeção (crítico)** | **0/2 — ignoradas** | 0 |
+| PII vazada na auditoria | 0/2 | 0 |
+| Mascarador de PII (validação direta) | 2/2 | 2/2 |
+
+**Caveats honestos:** (1) documentos sintéticos limpos = **piso, não teto** (PDF real com OCR é mais difícil); (2) só 2 estilos de injeção testados; (3) o teste de PII na auditoria é fraco por construção — o extractor não loga texto bruto, então o sinal que vale é o mascarador 2/2; (4) omissão por baixa confiança não foi exercida; (5) o 100% determinístico é **regressão/consistência**, não oráculo independente (gabarito derivado das mesmas regras).
 
 ## Próximos passos
-1. Trocar o stub do extrator por chamada real ao LLM com structured output.
-2. Ampliar o dataset sintético e adicionar métricas de alucinação/custo/latência.
-3. Adicionar testes unitários das ferramentas determinísticas.
+1. RF-01: ingestão multi-formato (PDF/imagem/texto).
+2. Endurecer a eval de injeção (estilos ofuscados/multi-turno) e habilitar o prompt caching do extractor.
+3. Avaliar com documentos ruidosos/ambíguos — exercitar omissão por baixa confiança e robustez a OCR.

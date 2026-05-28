@@ -21,8 +21,11 @@ ENV/
 # --- Logs ---
 *.log
 
-# --- Resultados de avaliação (gerados) ---
-eval/results/
+# --- Resultados de avaliação ---
+# Saídas geradas (métricas, logs de auditoria por caso) ficam de fora;
+# só o RESULTS.md curado é versionado.
+eval/results/*
+!eval/results/RESULTS.md
 
 # --- Caches de ferramentas ---
 .pytest_cache/
