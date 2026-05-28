@@ -1,0 +1,27 @@
+[
+  {
+    "id": "caso_001_consistente",
+    "dados_brutos": {
+      "renda_mensal": 8000, "renda_mensal_doc": "contracheque.pdf", "renda_mensal_confianca": 0.95,
+      "dividas_mensais": 2000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
+      "movimentacao_media": 7800, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.92
+    },
+    "gabarito": {"comprometimento_renda": 0.25, "qtd_inconsistencias": 0}
+  },
+  {
+    "id": "caso_002_inconsistente",
+    "dados_brutos": {
+      "renda_mensal": 10000, "renda_mensal_doc": "contracheque.pdf", "renda_mensal_confianca": 0.95,
+      "dividas_mensais": 3000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
+      "movimentacao_media": 3500, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.88
+    },
+    "gabarito": {"comprometimento_renda": 0.30, "qtd_inconsistencias": 1}
+  },
+  {
+    "id": "caso_003_dado_ausente",
+    "dados_brutos": {
+      "renda_mensal": 5000, "renda_mensal_doc": "contracheque.pdf", "renda_mensal_confianca": 0.4
+    },
+    "gabarito": {"comprometimento_renda": null, "qtd_inconsistencias": 0}
+  }
+]
