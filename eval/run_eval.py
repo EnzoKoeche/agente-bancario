@@ -35,7 +35,8 @@ DATASET = "eval/datasets/sintetico.json"
 SAIDA = "eval/results/metricas.json"
 
 # Indicadores asseridos (todos calculados pelas tools determinísticas).
-INDICADORES = ("comprometimento_renda", "capacidade_pagamento", "nivel_endividamento")
+INDICADORES = ("comprometimento_renda", "capacidade_pagamento", "nivel_endividamento",
+               "parcela_estimada", "comprometimento_com_parcela", "capacidade_apos_parcela")
 
 
 def _aprox(a, b, tol: float = 1e-4) -> bool:
@@ -86,7 +87,7 @@ def avaliar_caso(caso: dict) -> dict:
     ok_por_ind: dict[str, bool] = {}
     for nome in INDICADORES:
         obtido = getattr(ind, nome)
-        esperado = gab[nome]
+        esperado = gab.get(nome)  # ausente no gabarito => espera None (não mascara valor real)
         ok = _aprox(obtido, esperado)
         ok_por_ind[nome] = ok
         if not ok:
@@ -197,7 +198,7 @@ def _imprimir_tabela(m: dict) -> None:
           f"{cel(g['acuracia_qtd_inconsistencias'])} {cel(g['acuracia_severidade'])} "
           f"{cel(g['acuracia_escalacao'])}")
     print("=" * 66)
-    print("Indicadores (acurácia individual — 'indic' acima exige os 3 juntos):")
+    print(f"Indicadores (acurácia individual — 'indic' acima exige os {len(INDICADORES)} juntos):")
     for nome in INDICADORES:
         print(f"  - {nome:<22} {cel(g['acuracia_por_indicador'][nome])}")
     print("  (nivel_endividamento == comprometimento_renda: mesma fórmula na tool)")

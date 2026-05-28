@@ -203,5 +203,36 @@
       "movimentacao_media": 6900, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
     "gabarito": {"comprometimento_renda": 0.2144, "capacidade_pagamento": 5499.5, "nivel_endividamento": 0.2144, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+  },
+  {
+    "id": "caso_022_simulacao_parcela",
+    "categoria": "simulacao_parcela",
+    "dados_brutos": {
+      "renda_mensal": 8000, "renda_mensal_doc": "contracheque.pdf", "renda_mensal_confianca": 0.95,
+      "dividas_mensais": 2000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
+      "valor_solicitado": 12000, "valor_solicitado_doc": "proposta.pdf", "valor_solicitado_confianca": 0.9,
+      "prazo_meses": 24, "prazo_meses_doc": "proposta.pdf", "prazo_meses_confianca": 0.95
+    },
+    "gabarito": {"comprometimento_renda": 0.25, "capacidade_pagamento": 6000, "nivel_endividamento": 0.25, "parcela_estimada": 500, "comprometimento_com_parcela": 0.3125, "capacidade_apos_parcela": 5500, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+  },
+  {
+    "id": "caso_023_simulacao_sem_renda",
+    "categoria": "simulacao_parcela",
+    "dados_brutos": {
+      "valor_solicitado": 30000, "valor_solicitado_doc": "proposta.pdf", "valor_solicitado_confianca": 0.9,
+      "prazo_meses": 36, "prazo_meses_doc": "proposta.pdf", "prazo_meses_confianca": 0.9
+    },
+    "gabarito": {"comprometimento_renda": null, "capacidade_pagamento": null, "nivel_endividamento": null, "parcela_estimada": 833.33, "comprometimento_com_parcela": null, "capacidade_apos_parcela": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+  },
+  {
+    "id": "caso_024_simulacao_parcela_pesada",
+    "categoria": "simulacao_parcela",
+    "dados_brutos": {
+      "renda_mensal": 5000, "renda_mensal_doc": "contracheque.pdf", "renda_mensal_confianca": 0.95,
+      "dividas_mensais": 1500, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
+      "valor_solicitado": 24000, "valor_solicitado_doc": "proposta.pdf", "valor_solicitado_confianca": 0.9,
+      "prazo_meses": 24, "prazo_meses_doc": "proposta.pdf", "prazo_meses_confianca": 0.95
+    },
+    "gabarito": {"comprometimento_renda": 0.3, "capacidade_pagamento": 3500, "nivel_endividamento": 0.3, "parcela_estimada": 1000, "comprometimento_com_parcela": 0.5, "capacidade_apos_parcela": 2500, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
   }
 ]

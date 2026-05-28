@@ -33,20 +33,22 @@ docs/               diagrama de casos de uso
 pip install -r requirements.txt
 pytest -q                          # testes unitários das tools determinísticas
 python -m src.orchestrator.agent   # roda um exemplo
-python -m eval.run_eval            # eval determinística (grátis) -> eval/results/metricas.json
+python -m eval.run_eval            # eval determinística de cálculo (grátis) -> eval/results/metricas.json
+python -m eval.run_eval_ingestao   # eval de ingestão por formato (grátis)
 python -m eval.run_eval_alucinacao --full   # eval do extractor LLM (PAGO, ~US$0,08)
 ```
 
 ## Avaliação (o diferencial)
-Três camadas, todas versionadas e reproduzíveis sobre dados **sintéticos** (sem dados reais de pessoas):
-- **Testes unitários** das tools determinísticas (`pytest -q`).
-- **Eval determinística** (`python -m eval.run_eval`) — grátis/offline; indicadores, inconsistências, severidade e escalação por categoria.
+Quatro camadas, todas versionadas e reproduzíveis sobre dados **sintéticos** (sem dados reais de pessoas):
+- **Testes unitários** das tools determinísticas e da ingestão (`pytest -q`).
+- **Eval determinística de cálculo** (`python -m eval.run_eval`) — grátis/offline; 6 indicadores (inclui simulação de parcela), inconsistências, severidade e escalação por categoria.
+- **Eval de ingestão** (`python -m eval.run_eval_ingestao`) — grátis; mede a ingestão por formato (txt/md/PDF-texto/PDF-escaneado/imagem).
 - **Eval do extractor LLM** (`python -m eval.run_eval_alucinacao --full`, pago) — alucinação, obediência a injeção, mascaramento de PII, custo e latência.
 
 ### Resultados das avaliações
 Resumo curado em [`eval/results/RESULTS.md`](eval/results/RESULTS.md). Última execução:
 
-**Eval determinística — 21 casos (`python -m eval.run_eval`)**
+**Eval determinística de cálculo — 24 casos (`python -m eval.run_eval`)**
 
 | Categoria | n | Indicadores | Qtd inconsist. | Severidade | Escalação |
 |---|---|---|---|---|---|
@@ -55,9 +57,12 @@ Resumo curado em [`eval/results/RESULTS.md`](eval/results/RESULTS.md). Última e
 | severidade_alta | 4 | 1.000 | 1.000 | 1.000 | 1.000 |
 | dado_ausente | 4 | 1.000 | 1.000 | — | 1.000 |
 | baixa_confianca | 4 | 1.000 | 1.000 | — | 1.000 |
-| **GERAL** | **21** | **1.000** | **1.000** | **1.000** | **1.000** |
+| simulacao_parcela | 3 | 1.000 | 1.000 | — | 1.000 |
+| **GERAL** | **24** | **1.000** | **1.000** | **1.000** | **1.000** |
 
-Indicadores = `comprometimento_renda` + `capacidade_pagamento` + `nivel_endividamento` (os três asseridos juntos).
+6 indicadores asseridos: os 3 de risco + a simulação de parcela (`parcela_estimada`, `comprometimento_com_parcela`, `capacidade_apos_parcela`).
+
+**Eval de ingestão — 5/5 formatos (`python -m eval.run_eval_ingestao`)**: txt, md, pdf_texto (extração real via pypdf), pdf_escaneado (rasteriza + OCR), imagem (OCR). Nos formatos de OCR, um stub valida a fiação; OCR real exige Tesseract.
 
 **Eval do extractor LLM — 25 casos, ~US$0,079, ~2,76s/caso (`--full`)**
 

@@ -32,6 +32,12 @@ try:
 except ImportError:
     TEM_PDFIUM = False
 
+try:
+    from fpdf import FPDF  # noqa: F401
+    TEM_FPDF = True
+except ImportError:
+    TEM_FPDF = False
+
 
 def test_txt_leitura_direta(tmp_path):
     f = tmp_path / "contracheque.txt"
@@ -115,6 +121,19 @@ def test_pdf_sem_texto_e_sem_ocr_util_da_erro_de_ingestao(tmp_path):
     _criar_pdf_em_branco(f)
     with pytest.raises(IngestaoError):
         ingerir_arquivo(f)
+
+
+@pytest.mark.skipif(not (TEM_PYPDF and TEM_FPDF), reason="requer pypdf + fpdf2")
+def test_pdf_com_texto_extracao_real(tmp_path):
+    # PDF com camada de texto (gerado por fpdf2) -> extração REAL via pypdf (sem stub).
+    from fpdf import FPDF
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Helvetica", size=12)
+    pdf.cell(0, 10, "Renda liquida mensal: 8000")
+    f = tmp_path / "contracheque.pdf"
+    f.write_bytes(bytes(pdf.output()))
+    assert "8000" in ingerir_arquivo(f)
 
 
 @pytest.mark.skipif(TEM_TESSERACT, reason="pytesseract instalado: backend default disponível")
