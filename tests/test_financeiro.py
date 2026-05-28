@@ -8,6 +8,7 @@ from src.schemas.models import DadosFinanceiros, ValorComFonte, FonteCampo
 from src.tools.financeiro import (
     calcular_comprometimento_renda,
     calcular_capacidade_pagamento,
+    calcular_parcela,
     calcular_indicadores,
     detectar_inconsistencias,
 )
@@ -108,3 +109,46 @@ def test_inconsistencia_sem_movimentacao_lista_vazia():
     # Insumo ausente -> não detecta (não chuta).
     dados = DadosFinanceiros(renda_mensal=_vcf(10000))
     assert detectar_inconsistencias(dados) == []
+
+
+# --- calcular_parcela + simulação de impacto ------------------------------
+
+def test_parcela_sem_juros():
+    assert calcular_parcela(12000, 24) == 500.0  # 12000 / 24
+
+
+def test_parcela_prazo_invalido_levanta():
+    with pytest.raises(ValueError):
+        calcular_parcela(12000, 0)
+
+
+def test_parcela_com_juros_price():
+    # Price: PV=10000, i=2% a.m., n=12 -> PMT ~ R$ 945,60
+    assert abs(calcular_parcela(10000, 12, taxa_mensal=0.02) - 945.60) < 0.5
+
+
+def test_indicadores_parcela_impacto_completo():
+    dados = DadosFinanceiros(
+        renda_mensal=_vcf(8000), dividas_mensais=_vcf(2000),
+        valor_solicitado=_vcf(12000), prazo_meses=_vcf(24),
+    )
+    ind = calcular_indicadores(dados)
+    assert ind.parcela_estimada == 500.0
+    assert ind.comprometimento_com_parcela == 0.3125   # (2000 + 500) / 8000
+    assert ind.capacidade_apos_parcela == 5500.0       # 8000 - 2000 - 500
+
+
+def test_indicadores_parcela_sem_renda_nao_assume_zero():
+    # valor + prazo presentes, mas renda/dívidas ausentes: estima a parcela,
+    # mas NÃO calcula o impacto (ausência != zero).
+    dados = DadosFinanceiros(valor_solicitado=_vcf(12000), prazo_meses=_vcf(24))
+    ind = calcular_indicadores(dados)
+    assert ind.parcela_estimada == 500.0
+    assert ind.comprometimento_com_parcela is None
+    assert ind.capacidade_apos_parcela is None
+
+
+def test_indicadores_sem_credito_solicitado_parcela_none():
+    dados = DadosFinanceiros(renda_mensal=_vcf(8000), dividas_mensais=_vcf(2000))
+    ind = calcular_indicadores(dados)
+    assert ind.parcela_estimada is None

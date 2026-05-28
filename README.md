@@ -9,7 +9,8 @@ Agente de IA que **assiste** o analista de crédito na fase de pré-análise. **
 - **Human-in-the-loop.** A decisão final é sempre humana, por design (invariante no código).
 - **Auditabilidade.** Cada passo é logado com versão de prompt/modelo; PII mascarada (`src/audit/`).
 - **Segurança.** Conteúdo de documentos é tratado como dado, nunca como instrução.
-- **Ingestão multi-formato.** Arquivos (txt/PDF/imagem) viram texto normalizado antes da extração (`src/ingestion/`); OCR de imagem é um backend plugável (default pytesseract).
+- **Ingestão multi-formato.** Arquivos (txt/PDF/imagem) viram texto normalizado antes da extração (`src/ingestion/`); PDF escaneado é rasterizado e, como imagem, passa por um OCR plugável (default pytesseract).
+- **Simulação de crédito.** Estima a parcela do valor solicitado e seu impacto no comprometimento e na capacidade de pagamento (determinístico; sem juros por padrão, tabela Price opcional).
 
 ## Estrutura
 ```
@@ -74,5 +75,5 @@ Indicadores = `comprometimento_renda` + `capacidade_pagamento` + `nivel_endivida
 
 ## Próximos passos
 1. Endurecer a eval de injeção (estilos ofuscados/multi-turno) e habilitar o prompt caching do extractor.
-2. PDFs escaneados: rasterizar páginas + OCR (hoje PDF sem camada de texto dá erro claro).
-3. Usar `valor_solicitado`/`prazo_meses` nos indicadores (ex.: comprometimento com a nova parcela).
+2. Estender a eval determinística para cobrir a simulação de parcela e o OCR de PDF escaneado.
+3. Incorporar a taxa de juros do contrato na parcela (tabela Price) e ampliar os tipos de inconsistência.

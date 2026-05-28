@@ -31,6 +31,10 @@ class Indicadores(BaseModel):
     comprometimento_renda: Optional[float] = None
     nivel_endividamento: Optional[float] = None
     capacidade_pagamento: Optional[float] = None
+    # Simulação do crédito solicitado (valor_solicitado + prazo_meses):
+    parcela_estimada: Optional[float] = None             # parcela mensal estimada
+    comprometimento_com_parcela: Optional[float] = None  # (dívidas + parcela) / renda
+    capacidade_apos_parcela: Optional[float] = None      # renda - dívidas - parcela
 
 
 class Inconsistencia(BaseModel):

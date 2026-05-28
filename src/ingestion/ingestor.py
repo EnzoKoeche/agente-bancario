@@ -5,7 +5,7 @@ O texto normalizado que sai daqui é exatamente o que `gerar_pre_parecer` consom
 
 Dispatch por extensão:
   - .txt / .md  -> leitura direta de texto.
-  - .pdf        -> texto via pypdf (camada de texto). PDF escaneado (sem texto) -> erro claro.
+  - .pdf        -> texto via pypdf; sem camada de texto, rasteriza (pypdfium2) e aplica OCR.
   - imagem      -> OCR via backend PLUGÁVEL. Default: pytesseract (requer o binário
     Tesseract instalado no SO). Injete `ocr=` para usar outro backend (ou nos testes).
 
@@ -48,7 +48,7 @@ def _ler_texto(caminho: Path) -> str:
     return caminho.read_text(encoding="utf-8", errors="replace")
 
 
-def _texto_de_pdf(caminho: Path) -> str:
+def _texto_de_pdf(caminho: Path, ocr: OcrBackend | None = None) -> str:
     try:
         from pypdf import PdfReader
     except ImportError as e:  # dependência opcional, importada sob demanda
@@ -57,12 +57,10 @@ def _texto_de_pdf(caminho: Path) -> str:
     leitor = PdfReader(str(caminho))
     partes = [(pagina.extract_text() or "").strip() for pagina in leitor.pages]
     texto = "\n".join(p for p in partes if p)
-    if not texto.strip():
-        raise PdfSemTextoError(
-            f"'{caminho.name}' não tem camada de texto (provável PDF escaneado). "
-            "OCR de PDF exigiria rasterizar as páginas (fora do escopo atual)."
-        )
-    return texto
+    if texto.strip():
+        return texto
+    # Sem camada de texto (provável PDF escaneado): rasteriza as páginas e aplica OCR.
+    return _ocr_pdf_escaneado(caminho, ocr)
 
 
 def _ocr_pytesseract(caminho: Path) -> str:
@@ -77,6 +75,39 @@ def _ocr_pytesseract(caminho: Path) -> str:
     return pytesseract.image_to_string(Image.open(caminho))
 
 
+def _ocr_pdf_escaneado(caminho: Path, ocr: OcrBackend | None = None) -> str:
+    """PDF sem camada de texto: rasteriza cada página (pypdfium2) e aplica o backend de OCR.
+    Reusa o mesmo OCR plugável das imagens (default pytesseract; injetável via `ocr=`)."""
+    import tempfile
+    backend = ocr or _ocr_pytesseract
+    try:
+        import pypdfium2 as pdfium
+    except ImportError as e:  # dependência opcional, importada sob demanda
+        raise PdfSemTextoError(
+            f"'{caminho.name}' não tem camada de texto; o OCR de PDF escaneado requer "
+            "'pypdfium2' (pip install pypdfium2). Alternativa: ingira as páginas como imagem."
+        ) from e
+
+    pdf = pdfium.PdfDocument(str(caminho))
+    textos: list[str] = []
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            for i in range(len(pdf)):
+                imagem = pdf[i].render(scale=200 / 72).to_pil()
+                destino = Path(tmp) / f"pagina_{i}.png"
+                imagem.save(str(destino))
+                textos.append(backend(destino).strip())
+    finally:
+        pdf.close()
+
+    texto = "\n".join(t for t in textos if t)
+    if not texto.strip():
+        raise PdfSemTextoError(
+            f"'{caminho.name}': páginas rasterizadas, mas o OCR não retornou texto."
+        )
+    return texto
+
+
 def ingerir_arquivo(caminho: str | Path, ocr: OcrBackend | None = None) -> str:
     """Lê um único arquivo e devolve o texto extraído, escolhendo o leitor pela extensão."""
     caminho = Path(caminho)
@@ -87,7 +118,7 @@ def ingerir_arquivo(caminho: str | Path, ocr: OcrBackend | None = None) -> str:
     if ext in EXT_TEXTO:
         return _ler_texto(caminho)
     if ext in EXT_PDF:
-        return _texto_de_pdf(caminho)
+        return _texto_de_pdf(caminho, ocr=ocr)
     if ext in EXT_IMAGEM:
         backend = ocr or _ocr_pytesseract
         return backend(caminho)

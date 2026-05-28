@@ -18,6 +18,20 @@ def calcular_capacidade_pagamento(renda: float, dividas: float) -> float:
     return round(renda - dividas, 2)
 
 
+def calcular_parcela(valor_solicitado: float, prazo_meses: float,
+                     taxa_mensal: float = 0.0) -> float:
+    """Parcela mensal do crédito solicitado. Determinístico.
+    Sem juros (default): valor / prazo. Com taxa_mensal > 0: tabela Price (PMT)."""
+    if prazo_meses <= 0:
+        raise ValueError("Prazo deve ser positivo")
+    if valor_solicitado < 0:
+        raise ValueError("Valor solicitado não pode ser negativo")
+    if taxa_mensal <= 0:
+        return round(valor_solicitado / prazo_meses, 2)
+    fator = (1 + taxa_mensal) ** (-prazo_meses)
+    return round(valor_solicitado * taxa_mensal / (1 - fator), 2)
+
+
 def calcular_indicadores(dados: DadosFinanceiros) -> Indicadores:
     """Orquestra os cálculos a partir dos dados extraídos.
     Se um insumo necessário estiver ausente, o indicador fica None (não chuta)."""
@@ -29,6 +43,15 @@ def calcular_indicadores(dados: DadosFinanceiros) -> Indicadores:
         ind.comprometimento_renda = calcular_comprometimento_renda(renda, dividas)
         ind.capacidade_pagamento = calcular_capacidade_pagamento(renda, dividas)
         ind.nivel_endividamento = round(dividas / renda, 4)
+
+    # Simulação do impacto da parcela solicitada (não assume dívidas=0: ausência != zero).
+    valor = dados.valor_solicitado.valor
+    prazo = dados.prazo_meses.valor
+    if valor is not None and prazo is not None and prazo > 0:
+        ind.parcela_estimada = calcular_parcela(valor, prazo)
+        if renda is not None and dividas is not None and renda > 0:
+            ind.comprometimento_com_parcela = round((dividas + ind.parcela_estimada) / renda, 4)
+            ind.capacidade_apos_parcela = round(renda - dividas - ind.parcela_estimada, 2)
     return ind
 
 

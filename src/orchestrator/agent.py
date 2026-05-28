@@ -91,6 +91,24 @@ def _montar_rascunho(dados, indicadores, inconsistencias) -> str:
             f"- Comprometimento de renda: não calculável ({cit_renda}; {cit_dividas})"
         )
 
+    if indicadores.parcela_estimada is not None:
+        cit_valor = cite("valor solicitado", dados.valor_solicitado)
+        prazo = int(dados.prazo_meses.valor)
+        linhas.append(
+            f"- Crédito solicitado: {cit_valor}; prazo {prazo} meses "
+            f"-> parcela estimada {brl(indicadores.parcela_estimada)} (sem juros)."
+        )
+        if indicadores.comprometimento_com_parcela is not None:
+            linhas.append(
+                f"    • Comprometimento COM a nova parcela: "
+                f"{pct(indicadores.comprometimento_com_parcela)} (dívidas + parcela ÷ renda); "
+                f"capacidade após a parcela: {brl(indicadores.capacidade_apos_parcela)}."
+            )
+        else:
+            linhas.append(
+                "    • Impacto sobre a renda não calculável (renda e/ou dívidas ausentes)."
+            )
+
     if inconsistencias:
         linhas.append(f"- ATENÇÃO: {len(inconsistencias)} inconsistência(s) detectada(s):")
         for inc in inconsistencias:

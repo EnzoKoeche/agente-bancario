@@ -4,9 +4,10 @@ python-dotenv>=1.0
 
 # Ingestão multi-formato (RF-01)
 pypdf>=4.0                 # extração de texto de PDF (camada de texto)
-# OCR de imagens (opcional) — requer também o binário Tesseract instalado no SO:
+# OCR de imagens e de PDFs escaneados (opcional) — requer também o binário Tesseract no SO:
 pytesseract>=0.3.10
 Pillow>=10.0
+pypdfium2>=4.0             # rasteriza páginas de PDF escaneado para o OCR
 
 # Testes (dev) — pythonpath no pytest.ini exige pytest >= 7
 pytest>=7.0
