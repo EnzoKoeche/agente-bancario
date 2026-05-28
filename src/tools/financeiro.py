@@ -46,13 +46,9 @@ def detectar_inconsistencias(
             achados.append(
                 Inconsistencia(
                     tipo="renda_vs_movimentacao",
-                    descricao=(
-                        f"Renda declarada (R${renda:.2f}) diverge "
-                        f"{divergencia*100:.1f}% da movimentação média "
-                        f"(R${movimentacao:.2f})."
-                    ),
                     valor_a=renda,
                     valor_b=movimentacao,
+                    divergencia=round(divergencia, 4),
                     severidade="alta" if divergencia > 0.5 else "media",
                 )
             )

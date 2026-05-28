@@ -35,9 +35,9 @@ class Indicadores(BaseModel):
 
 class Inconsistencia(BaseModel):
     tipo: str
-    descricao: str
     valor_a: float
     valor_b: float
+    divergencia: Optional[float] = None  # divergência relativa calculada pela tool
     severidade: Literal["baixa", "media", "alta"]
 
 

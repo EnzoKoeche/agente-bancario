@@ -50,3 +50,4 @@ Ao terminar de trabalhar:
 
 ## Log local (fallback quando não há Notion)
 - 2026-05-28 — Esqueleto criado (schemas, tools, extractor stub, orchestrator, audit, prompt, eval). Próximo: trocar stub do extractor por LLM e popular dataset sintético.
+- 2026-05-28 — Rascunho determinístico com citação de fonte por valor + formatação BR (R$/%) em `_montar_rascunho`; carregamento de `.env` no `__main__`. `Inconsistencia` ganhou `divergencia: float | None` (calculada na tool `detectar_inconsistencias`) e perdeu o campo morto `descricao` (busca confirmou que não era lido em lugar nenhum). Percentual de divergência agora vem do campo, formatado em BR na apresentação. Validado via `python -m src.orchestrator.agent` (extractor ainda stub, sem chamada paga). Próximo: trocar stub do extractor por LLM e popular dataset sintético.
