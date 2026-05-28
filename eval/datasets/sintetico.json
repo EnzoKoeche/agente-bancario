@@ -7,7 +7,7 @@
       "dividas_mensais": 2000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 7800, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.92
     },
-    "gabarito": {"comprometimento_renda": 0.25, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.25, "capacidade_pagamento": 6000, "nivel_endividamento": 0.25, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
   },
   {
     "id": "caso_002_consistente",
@@ -17,7 +17,7 @@
       "dividas_mensais": 1800, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.88,
       "movimentacao_media": 5400, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": 0.3, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.3, "capacidade_pagamento": 4200, "nivel_endividamento": 0.3, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
   },
   {
     "id": "caso_003_consistente",
@@ -27,7 +27,7 @@
       "dividas_mensais": 2400, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 11000, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.91
     },
-    "gabarito": {"comprometimento_renda": 0.2, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.2, "capacidade_pagamento": 9600, "nivel_endividamento": 0.2, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
   },
   {
     "id": "caso_004_consistente_borda_030",
@@ -37,7 +37,7 @@
       "dividas_mensais": 2500, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 7000, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.88
     },
-    "gabarito": {"comprometimento_renda": 0.25, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.25, "capacidade_pagamento": 7500, "nivel_endividamento": 0.25, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
   },
   {
     "id": "caso_005_severidade_media",
@@ -47,7 +47,7 @@
       "dividas_mensais": 3000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 6000, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": 0.3, "qtd_inconsistencias": 1, "severidade_esperada": "media", "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.3, "capacidade_pagamento": 7000, "nivel_endividamento": 0.3, "qtd_inconsistencias": 1, "severidade_esperada": "media", "escalado_esperado": false}
   },
   {
     "id": "caso_006_severidade_media",
@@ -57,7 +57,7 @@
       "dividas_mensais": 2000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 5200, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.88
     },
-    "gabarito": {"comprometimento_renda": 0.25, "qtd_inconsistencias": 1, "severidade_esperada": "media", "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.25, "capacidade_pagamento": 6000, "nivel_endividamento": 0.25, "qtd_inconsistencias": 1, "severidade_esperada": "media", "escalado_esperado": false}
   },
   {
     "id": "caso_007_severidade_media",
@@ -67,7 +67,7 @@
       "dividas_mensais": 6000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 8250, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": 0.4, "qtd_inconsistencias": 1, "severidade_esperada": "media", "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.4, "capacidade_pagamento": 9000, "nivel_endividamento": 0.4, "qtd_inconsistencias": 1, "severidade_esperada": "media", "escalado_esperado": false}
   },
   {
     "id": "caso_008_severidade_media_borda_050",
@@ -77,7 +77,7 @@
       "dividas_mensais": 3000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 5000, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": 0.3, "qtd_inconsistencias": 1, "severidade_esperada": "media", "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.3, "capacidade_pagamento": 7000, "nivel_endividamento": 0.3, "qtd_inconsistencias": 1, "severidade_esperada": "media", "escalado_esperado": false}
   },
   {
     "id": "caso_009_severidade_alta",
@@ -87,7 +87,7 @@
       "dividas_mensais": 3000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 3500, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.88
     },
-    "gabarito": {"comprometimento_renda": 0.3, "qtd_inconsistencias": 1, "severidade_esperada": "alta", "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.3, "capacidade_pagamento": 7000, "nivel_endividamento": 0.3, "qtd_inconsistencias": 1, "severidade_esperada": "alta", "escalado_esperado": false}
   },
   {
     "id": "caso_010_severidade_alta",
@@ -97,7 +97,7 @@
       "dividas_mensais": 1800, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 3000, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": 0.2, "qtd_inconsistencias": 1, "severidade_esperada": "alta", "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.2, "capacidade_pagamento": 7200, "nivel_endividamento": 0.2, "qtd_inconsistencias": 1, "severidade_esperada": "alta", "escalado_esperado": false}
   },
   {
     "id": "caso_011_severidade_alta",
@@ -107,7 +107,7 @@
       "dividas_mensais": 8000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 5000, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": 0.4, "qtd_inconsistencias": 1, "severidade_esperada": "alta", "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.4, "capacidade_pagamento": 12000, "nivel_endividamento": 0.4, "qtd_inconsistencias": 1, "severidade_esperada": "alta", "escalado_esperado": false}
   },
   {
     "id": "caso_012_severidade_alta",
@@ -117,7 +117,7 @@
       "dividas_mensais": 2800, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 2100, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": 0.4, "qtd_inconsistencias": 1, "severidade_esperada": "alta", "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.4, "capacidade_pagamento": 4200, "nivel_endividamento": 0.4, "qtd_inconsistencias": 1, "severidade_esperada": "alta", "escalado_esperado": false}
   },
   {
     "id": "caso_013_dado_ausente_divida",
@@ -126,7 +126,7 @@
       "renda_mensal": 7000, "renda_mensal_doc": "contracheque.pdf", "renda_mensal_confianca": 0.95,
       "movimentacao_media": 6800, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": null, "capacidade_pagamento": null, "nivel_endividamento": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
   },
   {
     "id": "caso_014_dado_ausente_renda",
@@ -135,7 +135,7 @@
       "dividas_mensais": 2000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 5000, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": null, "capacidade_pagamento": null, "nivel_endividamento": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
   },
   {
     "id": "caso_015_dado_ausente_movimentacao",
@@ -144,7 +144,7 @@
       "renda_mensal": 8000, "renda_mensal_doc": "contracheque.pdf", "renda_mensal_confianca": 0.95,
       "dividas_mensais": 2400, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": 0.3, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": 0.3, "capacidade_pagamento": 5600, "nivel_endividamento": 0.3, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
   },
   {
     "id": "caso_016_dado_ausente_so_renda",
@@ -152,7 +152,7 @@
     "dados_brutos": {
       "renda_mensal": 5000, "renda_mensal_doc": "contracheque.pdf", "renda_mensal_confianca": 0.95
     },
-    "gabarito": {"comprometimento_renda": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
+    "gabarito": {"comprometimento_renda": null, "capacidade_pagamento": null, "nivel_endividamento": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
   },
   {
     "id": "caso_017_baixa_confianca_renda",
@@ -162,7 +162,7 @@
       "dividas_mensais": 2000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 7800, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.92
     },
-    "gabarito": {"comprometimento_renda": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": true}
+    "gabarito": {"comprometimento_renda": null, "capacidade_pagamento": null, "nivel_endividamento": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": true}
   },
   {
     "id": "caso_018_baixa_confianca_divida",
@@ -172,7 +172,7 @@
       "dividas_mensais": 3000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.5,
       "movimentacao_media": 9500, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": true}
+    "gabarito": {"comprometimento_renda": null, "capacidade_pagamento": null, "nivel_endividamento": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": true}
   },
   {
     "id": "caso_019_baixa_confianca_movimentacao",
@@ -182,7 +182,7 @@
       "dividas_mensais": 2400, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 3000, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.45
     },
-    "gabarito": {"comprometimento_renda": 0.3, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": true}
+    "gabarito": {"comprometimento_renda": 0.3, "capacidade_pagamento": 5600, "nivel_endividamento": 0.3, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": true}
   },
   {
     "id": "caso_020_baixa_confianca_renda_evita_falso_positivo",
@@ -192,6 +192,16 @@
       "dividas_mensais": 3000, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
       "movimentacao_media": 4000, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
     },
-    "gabarito": {"comprometimento_renda": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": true}
+    "gabarito": {"comprometimento_renda": null, "capacidade_pagamento": null, "nivel_endividamento": null, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": true}
+  },
+  {
+    "id": "caso_021_consistente_arredondamento",
+    "categoria": "consistente",
+    "dados_brutos": {
+      "renda_mensal": 7000, "renda_mensal_doc": "contracheque.pdf", "renda_mensal_confianca": 0.95,
+      "dividas_mensais": 1500.50, "dividas_mensais_doc": "serasa.pdf", "dividas_mensais_confianca": 0.9,
+      "movimentacao_media": 6900, "movimentacao_media_doc": "extrato.pdf", "movimentacao_media_confianca": 0.9
+    },
+    "gabarito": {"comprometimento_renda": 0.2144, "capacidade_pagamento": 5499.5, "nivel_endividamento": 0.2144, "qtd_inconsistencias": 0, "severidade_esperada": null, "escalado_esperado": false}
   }
 ]

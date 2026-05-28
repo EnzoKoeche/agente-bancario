@@ -8,10 +8,15 @@ src.extraction.confianca — que NÃO importa `anthropic`) e rodamos as tools
 determinísticas. Resultado: a eval é grátis, offline e reproduzível.
 
 O que mede (por caso e por categoria):
-  - acurácia de indicadores (comprometimento_renda)
+  - acurácia dos 3 indicadores (comprometimento_renda, capacidade_pagamento,
+    nivel_endividamento) — o caso só conta como acerto se os TRÊS baterem
   - acurácia da contagem de inconsistências
   - acurácia de severidade (só nos casos em que se espera inconsistência)
   - escalação correta: um campo que TINHA valor virou None pela regra de confiança
+
+Nota: nivel_endividamento usa a MESMA fórmula de comprometimento_renda na tool
+(round(dívidas/renda, 4)), logo são sempre idênticos; são asseridos em separado
+apenas como guard contra drift entre as duas linhas de cálculo.
 
 Fora de escopo (vai para um script PAGO, com casos em sintetico_llm.json):
 alucinação do extractor, resistência a injeção e mascaramento de PII ponta-a-ponta
@@ -28,6 +33,9 @@ from src.tools.financeiro import calcular_indicadores, detectar_inconsistencias
 
 DATASET = "eval/datasets/sintetico.json"
 SAIDA = "eval/results/metricas.json"
+
+# Indicadores asseridos (todos calculados pelas tools determinísticas).
+INDICADORES = ("comprometimento_renda", "capacidade_pagamento", "nivel_endividamento")
 
 
 def _aprox(a, b, tol: float = 1e-4) -> bool:
@@ -74,10 +82,16 @@ def avaliar_caso(caso: dict) -> dict:
 
     erros: list[str] = []
 
-    ok_ind = _aprox(ind.comprometimento_renda, gab["comprometimento_renda"])
-    if not ok_ind:
-        erros.append(f"comprometimento: esperado {gab['comprometimento_renda']}, "
-                     f"obtido {ind.comprometimento_renda}")
+    # Indicadores: o caso só acerta se os TRÊS baterem.
+    ok_por_ind: dict[str, bool] = {}
+    for nome in INDICADORES:
+        obtido = getattr(ind, nome)
+        esperado = gab[nome]
+        ok = _aprox(obtido, esperado)
+        ok_por_ind[nome] = ok
+        if not ok:
+            erros.append(f"{nome}: esperado {esperado}, obtido {obtido}")
+    ok_ind = all(ok_por_ind.values())
 
     ok_qtd = len(incons) == gab["qtd_inconsistencias"]
     if not ok_qtd:
@@ -97,6 +111,7 @@ def avaliar_caso(caso: dict) -> dict:
         "id": caso["id"],
         "categoria": caso["categoria"],
         "ok_ind": ok_ind,
+        "ok_por_ind": ok_por_ind,
         "ok_qtd": ok_qtd,
         "ok_sev": ok_sev,  # None quando a categoria não espera inconsistência
         "ok_escal": ok_escal,
@@ -120,6 +135,10 @@ def avaliar(dataset_path: str = DATASET) -> dict:
     geral = {
         "total_casos": total,
         "acuracia_indicadores": _taxa(sum(r["ok_ind"] for r in res), total),
+        "acuracia_por_indicador": {
+            nome: _taxa(sum(r["ok_por_ind"][nome] for r in res), total)
+            for nome in INDICADORES
+        },
         "acuracia_qtd_inconsistencias": _taxa(sum(r["ok_qtd"] for r in res), total),
         "acuracia_severidade": _taxa(sum(r["ok_sev"] for r in sev_aval), len(sev_aval)),
         "casos_severidade_avaliados": len(sev_aval),
@@ -178,6 +197,10 @@ def _imprimir_tabela(m: dict) -> None:
           f"{cel(g['acuracia_qtd_inconsistencias'])} {cel(g['acuracia_severidade'])} "
           f"{cel(g['acuracia_escalacao'])}")
     print("=" * 66)
+    print("Indicadores (acurácia individual — 'indic' acima exige os 3 juntos):")
+    for nome in INDICADORES:
+        print(f"  - {nome:<22} {cel(g['acuracia_por_indicador'][nome])}")
+    print("  (nivel_endividamento == comprometimento_renda: mesma fórmula na tool)")
     print(f"Severidade avaliada em {g['casos_severidade_avaliados']} caso(s) com inconsistência.")
     print(f"Escalação esperada em {g['casos_escalacao_esperados']} caso(s); "
           f"recall = {cel(g['taxa_escalacao_correta'])}.")
