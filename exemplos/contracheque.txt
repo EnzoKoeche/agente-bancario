@@ -1,0 +1,5 @@
+DEMONSTRATIVO DE PAGAMENTO (dados sintéticos)
+Empregador: Empresa Exemplo LTDA
+Competência: 04/2026
+Salário base: R$ 7.200,00
+Renda líquida mensal: R$ 8.000,00
