@@ -2,6 +2,15 @@
 
 Agente de IA que **assiste** o analista de crédito na fase de pré-análise. **Não decide** crédito — gera um rascunho de pré-parecer com fontes citadas, sempre revisado por um humano.
 
+> Projeto de portfólio. Opera apenas sobre **dados sintéticos** (sem dados reais de pessoas).
+
+## Demo
+Interface web do analista (Streamlit) — `streamlit run app/streamlit_app.py`:
+
+![Demo da interface: upload de documentos, indicadores com fontes, simulação de parcela, inconsistências, rascunho e ações Aprovar/Solicitar revisão](docs/demo.png)
+
+Permite **upload de documentos** (ou um **dossiê de exemplo**) e gera o pré-parecer com **indicadores e suas fontes**, **simulação da parcela**, **inconsistências**, o **rascunho** e a **trilha de auditoria** — mais os botões **Aprovar / Solicitar revisão** (a decisão é do analista, registrada na auditoria). Dois modos: **demonstração sem custo** (dados de exemplo, sem LLM) e **real** (extração no Haiku; requer `ANTHROPIC_API_KEY`).
+
 ## Princípios de design
 - **LLM orquestra, ferramentas calculam.** Números vêm de código determinístico (`src/tools/`), não do modelo.
 - **Saída validada por schema.** Campo ausente é `None`, nunca inventado (`src/schemas/`).
@@ -39,9 +48,6 @@ python -m eval.run_eval            # eval determinística de cálculo (grátis) 
 python -m eval.run_eval_ingestao   # eval de ingestão por formato (grátis)
 python -m eval.run_eval_alucinacao --full   # eval do extractor LLM (PAGO, ~US$0,08)
 ```
-
-## Interface (front)
-`streamlit run app/streamlit_app.py` abre a UI do analista: upload de documentos (ou um dossiê de exemplo) → pré-parecer com **indicadores e suas fontes**, **simulação da parcela**, **inconsistências**, o **rascunho** e a **trilha de auditoria** — e os botões **Aprovar / Solicitar revisão** (a decisão é do analista, registrada na auditoria). Tem **modo demonstração sem custo** (dados de exemplo, sem LLM) e **modo real** (extração no Haiku; requer `ANTHROPIC_API_KEY`).
 
 ## Avaliação (o diferencial)
 Quatro camadas, todas versionadas e reproduzíveis sobre dados **sintéticos** (sem dados reais de pessoas):
