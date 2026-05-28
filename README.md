@@ -93,3 +93,6 @@ Resumo curado em [`eval/results/RESULTS.md`](eval/results/RESULTS.md). Última e
 1. Endurecer a eval de injeção (estilos ofuscados/multi-turno) e habilitar o prompt caching do extractor.
 2. Estender a eval determinística para cobrir a simulação de parcela e o OCR de PDF escaneado.
 3. Incorporar a taxa de juros do contrato na parcela (tabela Price) e ampliar os tipos de inconsistência.
+
+## Licença
+MIT — veja [LICENSE](LICENSE).
