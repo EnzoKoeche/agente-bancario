@@ -9,11 +9,13 @@ from src.audit.logger import AuditLogger
 
 
 def gerar_pre_parecer(documentos: dict[str, Any],
-                      audit: AuditLogger | None = None) -> PreParecer:
+                      audit: AuditLogger | None = None,
+                      extrator=None) -> PreParecer:
     audit = audit or AuditLogger()
+    extrair = extrator or extrair_dados  # injeção de dependência (ex.: stub no modo demo do front)
 
     # 1. Extração (validada por schema)
-    dados = extrair_dados(documentos, audit)
+    dados = extrair(documentos, audit)
 
     # 2. Cálculo determinístico (ferramentas, não LLM)
     indicadores = calcular_indicadores(dados)

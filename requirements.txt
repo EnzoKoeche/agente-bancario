@@ -12,3 +12,6 @@ pypdfium2>=4.0             # rasteriza páginas de PDF escaneado para o OCR
 # Testes (dev) — pythonpath no pytest.ini exige pytest >= 7
 pytest>=7.0
 fpdf2>=2.7                 # gera PDFs de teste (fixtures) nas evals/testes de ingestão
+
+# Front (app) — opcional
+streamlit>=1.30

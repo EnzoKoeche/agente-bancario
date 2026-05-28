@@ -14,6 +14,7 @@ Agente de IA que **assiste** o analista de crédito na fase de pré-análise. **
 
 ## Estrutura
 ```
+app/                front Streamlit (upload → pré-parecer → revisar/aprovar)
 src/orchestrator/   fluxo do agente
 src/ingestion/      ingestão multi-formato (txt/PDF/imagem) -> texto; OCR plugável (RF-01)
 src/extraction/     extração via LLM (Haiku) + regra de confiança isolada (confianca.py)
@@ -31,12 +32,16 @@ docs/               diagrama de casos de uso
 ## Como rodar
 ```bash
 pip install -r requirements.txt
-pytest -q                          # testes unitários das tools determinísticas
+streamlit run app/streamlit_app.py # interface web (modo demonstração, sem custo)
+pytest -q                          # testes unitários das tools e da ingestão
 python -m src.orchestrator.agent   # roda um exemplo
 python -m eval.run_eval            # eval determinística de cálculo (grátis) -> eval/results/metricas.json
 python -m eval.run_eval_ingestao   # eval de ingestão por formato (grátis)
 python -m eval.run_eval_alucinacao --full   # eval do extractor LLM (PAGO, ~US$0,08)
 ```
+
+## Interface (front)
+`streamlit run app/streamlit_app.py` abre a UI do analista: upload de documentos (ou um dossiê de exemplo) → pré-parecer com **indicadores e suas fontes**, **simulação da parcela**, **inconsistências**, o **rascunho** e a **trilha de auditoria** — e os botões **Aprovar / Solicitar revisão** (a decisão é do analista, registrada na auditoria). Tem **modo demonstração sem custo** (dados de exemplo, sem LLM) e **modo real** (extração no Haiku; requer `ANTHROPIC_API_KEY`).
 
 ## Avaliação (o diferencial)
 Quatro camadas, todas versionadas e reproduzíveis sobre dados **sintéticos** (sem dados reais de pessoas):
