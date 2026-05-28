@@ -9,10 +9,12 @@ Agente de IA que **assiste** o analista de crédito na fase de pré-análise. **
 - **Human-in-the-loop.** A decisão final é sempre humana, por design (invariante no código).
 - **Auditabilidade.** Cada passo é logado com versão de prompt/modelo; PII mascarada (`src/audit/`).
 - **Segurança.** Conteúdo de documentos é tratado como dado, nunca como instrução.
+- **Ingestão multi-formato.** Arquivos (txt/PDF/imagem) viram texto normalizado antes da extração (`src/ingestion/`); OCR de imagem é um backend plugável (default pytesseract).
 
 ## Estrutura
 ```
 src/orchestrator/   fluxo do agente
+src/ingestion/      ingestão multi-formato (txt/PDF/imagem) -> texto; OCR plugável (RF-01)
 src/extraction/     extração via LLM (Haiku) + regra de confiança isolada (confianca.py)
 src/tools/          cálculos determinísticos
 src/schemas/        contratos Pydantic
@@ -71,6 +73,6 @@ Indicadores = `comprometimento_renda` + `capacidade_pagamento` + `nivel_endivida
 **Caveats honestos:** (1) documentos sintéticos limpos = **piso, não teto** (PDF real com OCR é mais difícil); (2) só 2 estilos de injeção testados; (3) o teste de PII na auditoria é fraco por construção — o extractor não loga texto bruto, então o sinal que vale é o mascarador 2/2; (4) omissão por baixa confiança não foi exercida; (5) o 100% determinístico é **regressão/consistência**, não oráculo independente (gabarito derivado das mesmas regras).
 
 ## Próximos passos
-1. RF-01: ingestão multi-formato (PDF/imagem/texto).
-2. Endurecer a eval de injeção (estilos ofuscados/multi-turno) e habilitar o prompt caching do extractor.
-3. Avaliar com documentos ruidosos/ambíguos — exercitar omissão por baixa confiança e robustez a OCR.
+1. Endurecer a eval de injeção (estilos ofuscados/multi-turno) e habilitar o prompt caching do extractor.
+2. PDFs escaneados: rasterizar páginas + OCR (hoje PDF sem camada de texto dá erro claro).
+3. Usar `valor_solicitado`/`prazo_meses` nos indicadores (ex.: comprometimento com a nova parcela).

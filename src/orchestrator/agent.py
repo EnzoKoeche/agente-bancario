@@ -38,6 +38,15 @@ def gerar_pre_parecer(documentos: dict[str, Any],
     return parecer
 
 
+def gerar_pre_parecer_de_arquivos(origem, audit: AuditLogger | None = None, ocr=None) -> PreParecer:
+    """Conveniência RF-01: ingere arquivos (txt/pdf/imagem) e gera o pré-parecer.
+    `origem` pode ser um arquivo, um diretório ou uma lista de caminhos.
+    Import preguiçoso da ingestão para não arrastar pypdf/Pillow ao resto do pipeline."""
+    from src.ingestion.ingestor import ingerir
+    documentos = ingerir(origem, ocr=ocr)
+    return gerar_pre_parecer(documentos, audit)
+
+
 def _montar_rascunho(dados, indicadores, inconsistencias) -> str:
     """Redige o rascunho de forma DETERMINÍSTICA: cada afirmação quantitativa
     imprime a fonte (documento + campo) dos seus insumos, lida do ValorComFonte.
