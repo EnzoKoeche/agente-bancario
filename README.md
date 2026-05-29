@@ -9,7 +9,7 @@ Interface web do analista (Streamlit) — `streamlit run app/streamlit_app.py`:
 
 ![Demo da interface: upload de documentos, indicadores com fontes, simulação de parcela, inconsistências, rascunho e ações Aprovar/Solicitar revisão](docs/demo.png)
 
-Permite **upload de documentos** (ou um **dossiê de exemplo**) e gera o pré-parecer com **indicadores e suas fontes**, **simulação da parcela**, **inconsistências**, o **rascunho** e a **trilha de auditoria** — mais os botões **Aprovar / Solicitar revisão** (a decisão é do analista, registrada na auditoria). Dois modos: **demonstração sem custo** (dados de exemplo, sem LLM) e **real** (extração no Haiku; requer `ANTHROPIC_API_KEY`).
+Permite **upload de documentos** (ou um **dossiê de exemplo**) e gera o pré-parecer com **indicadores e suas fontes**, **simulação da parcela**, **inconsistências**, o **rascunho** e a **trilha de auditoria** — mais os botões **Aprovar / Solicitar revisão** (a decisão é do analista, registrada na auditoria). Dois modos: **demonstração sem custo** (dados de exemplo, sem LLM) e **real** (extração no Haiku; requer `ANTHROPIC_API_KEY`). Para testar o **modo real**, suba os dossiês sintéticos de [`exemplos/`](exemplos/) (ou os seus próprios arquivos).
 
 ## Princípios de design
 - **LLM orquestra, ferramentas calculam.** Números vêm de código determinístico (`src/tools/`), não do modelo.
